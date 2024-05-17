@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:yummygood/displays/signup.dart';
 
 class HomePage extends StatefulWidget{
-  HomePage({super.key});
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => HomePageState();
@@ -31,6 +32,7 @@ class HomePageState extends State<HomePage>{
                   ),
                   onPressed: (){
                     // Sign Up Page
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=> SignUpPage()));
                   },
                   child:const Text("Sign Up", style: TextStyle(color: Colors.black)),
                   ),
