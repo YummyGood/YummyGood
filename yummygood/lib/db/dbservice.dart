@@ -26,7 +26,7 @@ class DatabaseService {
   }
 
   void _onCreate(Database _db, int version) async{
-    await _db.execute('CREATE TABLE Users(username TEXT PRIMARY KEY, hash TEXT, salt TEXT)');
+    await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT)');
     print("Created Users Table");
   }
 
