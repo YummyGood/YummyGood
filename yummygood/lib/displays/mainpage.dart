@@ -4,6 +4,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:yummygood/db/userservice.dart';
 import 'package:yummygood/model/user.dart';
 import 'package:yummygood/displays/menupage.dart';
+import 'package:yummygood/displays/searchresult.dart';
 import 'dart:developer' as developer;
 
 
@@ -50,7 +51,7 @@ class MainState extends State<MainPage>{
               
               List<Map<String, Object?>> restaurants = snapshot.data;
               restHighlight.clear();
-              
+
               for (Map<String, Object?> restaurant in restaurants){
                 restHighlight.add(RestaurantItem(restaurant["name"].toString(), restaurant["delivery_fee"].toString(), restaurant["picture_url"].toString(), restaurant["restaurant_id"].toString()));
               }
@@ -93,7 +94,7 @@ class MainState extends State<MainPage>{
                           width:400,
                           child: TextField(
                             onSubmitted: (String value){
-                                developer.log(value);
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("name", value)));
                             },
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.search), 
@@ -153,7 +154,7 @@ class MainState extends State<MainPage>{
                                   child: IconButton(
                                     icon: Image.asset("images/kebab.png"),
                                     onPressed: (){
-                                  
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("category", "Kebab")));
                                     },
                                   ),
                                 ),

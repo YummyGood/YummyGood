@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yummygood/displays/itempage.dart';
+import 'package:yummygood/displays/viewcart.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -59,8 +61,18 @@ class MenuState extends State<MenuPage>{
               menuItemsList.add(const Text("Menu Items", style:TextStyle(fontSize:20)));
               menuItemsList.add(const SizedBox(height:20));
               for (Map<String, Object?> menuItem in menuItems){
-                menuItemsList.add(MenuItem(menuItem));
+                menuItemsList.add(GestureDetector(onTap:(){Navigator.push(context, MaterialPageRoute(builder: (builder) => ItemPage(menuItem["item_id"].toString())));},child: MenuItem(menuItem)));
               }
+
+              menuItemsList.add(TextButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewCartPage(restaurantInfo["restaurant_id"].toString())));
+              },
+                child: Text("View Cart", style:TextStyle(color:Colors.black)), 
+                style:TextButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF4500),
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  splashFactory: NoSplash.splashFactory,
+                )));
 
               return Center(
                 child:Column(

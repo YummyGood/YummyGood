@@ -33,15 +33,18 @@ class DatabaseService {
     await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT)');
     developer.log("Created Users Table");
 
-    await _db.execute('CREATE TABLE Restaurant(restaurant_id NUMBER PRIMARY KEY, name TEXT, delivery_fee REAL, delivery_time TEXT, picture_url TEXT)');
+    await _db.execute('CREATE TABLE Restaurant(restaurant_id NUMBER PRIMARY KEY, name TEXT, category TEXT, delivery_fee REAL, delivery_time TEXT, picture_url TEXT)');
     developer.log("Created Restaurant Table");
 
     await _db.execute('CREATE TABLE MenuItem(item_id NUMBER PRIMARY KEY, name TEXT, description TEXT, price REAL, restaurant_id NUMBER, picture_url TEXT)');
     developer.log("Created Menu Item Table");
 
-    await _db.execute("INSERT INTO Restaurant VALUES(1, 'KFC', 8.95, '20-30 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/8fe82646a8a3f13b36e996a83752c618/719c6bd2757b08684c0faae44d43159d.jpeg')");
-    await _db.execute("INSERT INTO Restaurant VALUES(2, 'McDonalds', 4.99, '10-15 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/ceba3c72257138fe56e868d7edf86fc9/c9252e6c6cd289c588c3381bc77b1dfc.jpeg')");
-    await _db.execute("INSERT INTO Restaurant VALUES(3, 'Kebab King', 5.99, '20-30 minutes', 'https://realkebab.com.au/wp-content/uploads/2019/04/HSP-W-CHIPS-X-LARGE.jpg')");
+    await _db.execute('CREATE TABLE CartItem(item_id NUMBER PRIMARY KEY, restaurant_id TEXT, email TEXT, quantity NUMBER)');
+    developer.log("Created Cart Table");
+
+    await _db.execute("INSERT INTO Restaurant VALUES(1, 'KFC', 'Fast Food' ,8.95, '20-30 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/8fe82646a8a3f13b36e996a83752c618/719c6bd2757b08684c0faae44d43159d.jpeg')");
+    await _db.execute("INSERT INTO Restaurant VALUES(2, 'McDonalds', 'Fast Food', 4.99, '10-15 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/ceba3c72257138fe56e868d7edf86fc9/c9252e6c6cd289c588c3381bc77b1dfc.jpeg')");
+    await _db.execute("INSERT INTO Restaurant VALUES(3, 'Kebab King', 'Kebab', 5.99, '20-30 minutes', 'https://realkebab.com.au/wp-content/uploads/2019/04/HSP-W-CHIPS-X-LARGE.jpg')");
 
     developer.log("Inserted restaurant data");
 
