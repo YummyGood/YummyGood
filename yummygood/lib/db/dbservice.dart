@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:developer' as developer;
 
 class DatabaseService {
 
@@ -27,7 +28,7 @@ class DatabaseService {
 
   void _onCreate(Database _db, int version) async{
     await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT)');
-    print("Created Users Table");
+    developer.log("Created Users Table");
   }
 
   void getMovies() async{
