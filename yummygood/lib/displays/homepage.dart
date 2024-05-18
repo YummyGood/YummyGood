@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yummygood/displays/signup.dart';
+import 'package:yummygood/displays/login.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({super.key});
@@ -47,7 +48,7 @@ class HomePageState extends State<HomePage>{
                     splashFactory: NoSplash.splashFactory
                   ),
                   onPressed: (){
-                    // Sign Up Page
+                    Navigator.push(context, MaterialPageRoute(builder:(context)=>LoginPage()));
                   },
                   child:const Text("Sign In", style: TextStyle(color: Colors.black)),
                   ),

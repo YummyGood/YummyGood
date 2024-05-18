@@ -1,7 +1,9 @@
 class User{
-  String username;
-  String passHash;
-  String salt;
+  String email;
+  String firstName;
+  String lastName;
+  String phone;
+  String address;
 
-  User(this.username, this.passHash, this.salt);
+  User(this.email, this.firstName, this.lastName, this.phone, this.address);
 }
