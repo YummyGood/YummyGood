@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:yummygood/db/dbservice.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:yummygood/db/userservice.dart';
 import 'package:yummygood/model/user.dart';
-import 'package:yummygood/model/restaurant.dart';
+import 'package:yummygood/displays/menupage.dart';
 import 'dart:developer' as developer;
 
 
@@ -15,10 +16,15 @@ class MainPage extends StatefulWidget{
 
 class MainState extends State<MainPage>{
 
-  Future<String> getRestaurants(){
-    return Future.delayed(Duration(seconds: 2), () {
-      return "I am data";
-    });
+  List<RestaurantItem> restHighlight = [];
+
+
+  Future<dynamic> getRestaurants() async{
+    DatabaseService dbService = DatabaseService();
+    Database db = await dbService.getDatabase();
+
+    final data = db.rawQuery("SELECT * FROM Restaurant");
+    return data;
   }
 
   @override
@@ -42,6 +48,13 @@ class MainState extends State<MainPage>{
           if (snapshot.connectionState == ConnectionState.done){
             if (snapshot.hasData){
               
+              List<Map<String, Object?>> restaurants = snapshot.data;
+              restHighlight.clear();
+              
+              for (Map<String, Object?> restaurant in restaurants){
+                restHighlight.add(RestaurantItem(restaurant["name"].toString(), restaurant["delivery_fee"].toString(), restaurant["picture_url"].toString(), restaurant["restaurant_id"].toString()));
+              }
+
               UserService userService = UserService();
               User? currentUser = userService.getUser();
 
@@ -58,6 +71,7 @@ class MainState extends State<MainPage>{
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         // Address Box
+                        const SizedBox(height:40),
                         Container(
                           color: const Color(0xFFEBA174),
                           child: SizedBox(height:50,width:400,child:
@@ -89,8 +103,76 @@ class MainState extends State<MainPage>{
                               hintText: "Search"
                             )
                           ),
-                        )
+                        ),
+                        const SizedBox(height:30),
+                        
+                        // Category suggestions
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            const SizedBox(width: 10),
 
+                            // Pizza Button
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height:90,
+                                  child: IconButton(
+                                    icon: Image.asset("images/pizza.png"),
+                                    onPressed: (){
+                                  
+                                    },
+                                  ),
+                                ),
+                                const Text("Pizza"),
+                              ]
+                            ),
+
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height:90,
+                                  child: IconButton(
+                                    icon: Image.asset("images/fast_food.png"),
+                                    onPressed: (){
+                                  
+                                    },
+                                  ),
+                                ),
+                                const Text("Fast Food"),
+                              ]
+                            ),
+
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                SizedBox(
+                                  height:90,
+                                  child: IconButton(
+                                    icon: Image.asset("images/kebab.png"),
+                                    onPressed: (){
+                                  
+                                    },
+                                  ),
+                                ),
+                                const Text("Kebab"),
+                              ]
+                            ),
+                            const SizedBox(width: 10),
+                          ]
+                        ),
+                        const SizedBox(height:30),
+
+                        // List view for 3 random restaurants
+                        SizedBox(
+                            width:350,
+                            height:420,
+                            child: ListView(
+                              children: restHighlight
+                            ),
+                          ),
                       ],
                     )
                   ),
@@ -105,6 +187,41 @@ class MainState extends State<MainPage>{
         },
         future: getRestaurants(),
       )
+    );
+  }
+}
+
+class RestaurantItem extends StatelessWidget{
+  
+  String name;
+  String deliveryFee;
+  String imageUrl;
+  String restaurantId;
+
+  RestaurantItem(this.name, this.deliveryFee, this.imageUrl, this.restaurantId);
+
+  @override
+  Widget build(BuildContext context){
+    return Column(
+      children: <Widget>[
+        Container(
+          decoration:BoxDecoration(
+            border: Border.all(
+              color: Colors.black, 
+              width:1)), 
+            width:350, 
+            height:100, 
+            child: GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => MenuPage(restaurantId)));
+              },
+              child: Image.network(imageUrl, 
+                fit:BoxFit.cover
+              ),
+            )),
+        Align(alignment:Alignment.centerLeft, child:(Text("$name: $deliveryFee delivery fee"))),
+        const SizedBox(height:20),
+      ],
     );
   }
 }
