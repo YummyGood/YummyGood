@@ -88,7 +88,7 @@ class SignUpState extends State<SignUpPage>{
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const SizedBox(height:40),
-              const Text("Become apart"),
+              const Text(key: const Key("title"), "Become apart"),
               const Text("of"),
               Container(decoration:BoxDecoration(border: Border.all(color: Colors.black, width:1)), child: const Image(image: AssetImage("images/logo.png"), height:150)),
               const SizedBox(height:20),
@@ -100,7 +100,7 @@ class SignUpState extends State<SignUpPage>{
                   Align(alignment: Alignment.centerLeft, child: Text("Email:")),
                 ],
               ),
-              SizedBox(width:350,child:TextField(controller: emailController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your email"))),
+              SizedBox(width:350,child:TextField(key:const Key("emailField"), controller: emailController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your email"))),
               const SizedBox(height:10),
         
               // Password Field

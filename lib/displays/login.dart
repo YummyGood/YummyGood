@@ -76,7 +76,7 @@ class LoginState extends State<LoginPage>{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children:<Widget>[
-            const Text("Welcome back"),
+            const Text(key:const Key("title"), "Welcome back", ),
             const Text("to"),
             Container(decoration:BoxDecoration(border: Border.all(color: Colors.black, width:1)), child: const Image(image: AssetImage("images/logo.png"), height:150)),
             const SizedBox(height: 20),

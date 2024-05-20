@@ -26,31 +26,33 @@ class HomePageState extends State<HomePage>{
                 SizedBox(
                   width: 100,
                   child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF4500),
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                    splashFactory: NoSplash.splashFactory
-                  ),
-                  onPressed: (){
-                    // Sign Up Page
-                    Navigator.push(context, MaterialPageRoute(builder:(context)=> SignUpPage()));
-                  },
-                  child:const Text("Sign Up", style: TextStyle(color: Colors.black)),
+                    key:const Key("signup_btn"),
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF4500),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      splashFactory: NoSplash.splashFactory
+                    ),
+                    onPressed: (){
+                      // Sign Up Page
+                      Navigator.push(context, MaterialPageRoute(builder:(context)=> SignUpPage()));
+                    },
+                    child:const Text("Sign Up", style: TextStyle(color: Colors.black)),
                   ),
                 ),
                 const SizedBox(width:30),
                 SizedBox(
                   width: 100,
                   child: TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: const Color(0xFFFF4500),
-                    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                    splashFactory: NoSplash.splashFactory
-                  ),
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder:(context)=>LoginPage()));
-                  },
-                  child:const Text("Sign In", style: TextStyle(color: Colors.black)),
+                    key:const Key("login_btn"),
+                    style: TextButton.styleFrom(
+                      backgroundColor: const Color(0xFFFF4500),
+                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                      splashFactory: NoSplash.splashFactory
+                    ),
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder:(context)=>LoginPage()));
+                    },
+                    child:const Text("Sign In", style: TextStyle(color: Colors.black)),
                   ),
                 ),
               ]
