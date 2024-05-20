@@ -24,6 +24,7 @@ void main() {
     expect(find.byKey(const Key("login_btn")), findsOneWidget);
     await tester.tap(find.byKey(const Key("login_btn")), warnIfMissed: false);
 
+    // ensure login page loads correctly
     await tester.pump();
     await tester.pump();
     expect(find.byKey(const Key("title")), findsOneWidget);

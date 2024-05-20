@@ -57,7 +57,7 @@ class LoginState extends State<LoginPage>{
 
       Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage()), (route) => false);
     }else{
-      errorMessage = "Incorrect password or email";
+      errorMessage = "Incorrect password or email!";
       errorColor = Colors.red;
       setState((){});
     }
