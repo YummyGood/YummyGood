@@ -6,6 +6,7 @@ import 'package:sqflite/sqflite.dart';
 import 'mainpage.dart';
 import 'categories.dart';
 import 'person.dart';
+import 'edit.dart';
 
 class MenuPage extends StatefulWidget{
   MenuPage(this.restaurantId);
@@ -91,9 +92,13 @@ class MenuState extends State<MenuPage>{
                           fit:BoxFit.cover
                         )),
                         const SizedBox(height:20),
-                        Text("${restaurantInfo["name"]} Menu", style:const TextStyle(fontSize: 20)),
-
-                        const SizedBox(height:30),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text("${restaurantInfo["name"]} Menu", style:const TextStyle(fontSize: 20)),
+                            IconButton(icon: Icon(Icons.edit), onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(restaurantInfo)));}),
+                          ],
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
