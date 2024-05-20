@@ -61,9 +61,16 @@ class SignUpState extends State<SignUpPage>{
     String passwordHash = md5.convert(utf8.encode("$salt${passwordController.text}")).toString();
     
     await db.execute("INSERT INTO Users VALUES('${emailController.text}','${firstNameController.text}','${lastNameController.text}','${phoneNumberController.text}','${deliveryAddressController.text}','$passwordHash','$salt')");
-    errorMessage = "User successfully created!";
-    errorColor = Colors.green;
-    setState((){});
+    showDialog(context: context, builder: (context) => AlertDialog(
+      title: const Text("Success"),
+      content: const Text("User successfully created!"),
+      actions: <Widget>[
+        TextButton(
+          onPressed: (){Navigator.of(context).pop();Navigator.of(context).pop();},
+          child: const Text("OK")
+        )
+      ]
+    ));
   }
 
   @override
@@ -103,7 +110,7 @@ class SignUpState extends State<SignUpPage>{
                   Align(alignment: Alignment.centerLeft, child: Text("Password:")),
                 ],
               ),
-              SizedBox(width:350, child:TextField(controller: passwordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your password"))),
+              SizedBox(width:350, child:TextField(controller: passwordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your password"), obscureText: true, enableSuggestions: false,autocorrect: true,)),
               const SizedBox(height:10),
         
               // Confirm Password Field
@@ -113,7 +120,7 @@ class SignUpState extends State<SignUpPage>{
                   Align(alignment: Alignment.centerLeft, child: Text("Confirm Password:")),
                 ],
               ),
-              SizedBox(width:350, child:TextField(controller: confirmPasswordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Confirm your password"))),
+              SizedBox(width:350, child:TextField(controller: confirmPasswordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Confirm your password"), obscureText: true, enableSuggestions: false,autocorrect: true,)),
               const SizedBox(height:10),
         
               // First and Last Name Fields

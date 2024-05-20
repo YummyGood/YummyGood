@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:yummygood/db/userservice.dart';
+import 'package:yummygood/displays/categories.dart';
 import 'package:yummygood/model/user.dart';
 import 'package:yummygood/displays/menupage.dart';
 import 'package:yummygood/displays/searchresult.dart';
+import 'person.dart';
 import 'dart:developer' as developer;
 
 
@@ -38,9 +40,8 @@ class MainState extends State<MainPage>{
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             IconButton(icon:const Icon(Icons.home), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.search), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.food_bank), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.person), onPressed: (){},),
+            IconButton(icon:const Icon(Icons.search), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));},),
+            IconButton(icon:const Icon(Icons.person), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PersonPage()));},),
           ],
         )
       ),
@@ -73,18 +74,21 @@ class MainState extends State<MainPage>{
                       children: <Widget>[
                         // Address Box
                         const SizedBox(height:40),
-                        Container(
-                          color: const Color(0xFFEBA174),
-                          child: SizedBox(height:50,width:400,child:
-                            Center(child:Row(
+                        SizedBox(
+                          height:50,
+                          width:400,
+                          child: Container(
+                            color: const Color(0xFFEBA174),
+                            child: Center(child:Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 const SizedBox(width:20),
-                                Text("Currently delivering to ${currentUser.address}"),
+                                Text("Currently delivering to ${currentUser.address}", overflow:TextOverflow.ellipsis),
                                 const Spacer(),
                                 IconButton(icon:const Icon(Icons.arrow_downward), onPressed:(){}),
                               ],
-                            ))),
+                            )),
+                          ),
                         ),
                         const SizedBox(height:20),
 
@@ -94,7 +98,8 @@ class MainState extends State<MainPage>{
                           width:400,
                           child: TextField(
                             onSubmitted: (String value){
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("name", value)));
+                              value = value.replaceAll("'", "");
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("name", value)));
                             },
                             decoration: const InputDecoration(
                               prefixIcon: Icon(Icons.search), 
@@ -122,7 +127,7 @@ class MainState extends State<MainPage>{
                                   child: IconButton(
                                     icon: Image.asset("images/pizza.png"),
                                     onPressed: (){
-                                  
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("category", "Pizza")));
                                     },
                                   ),
                                 ),
@@ -138,7 +143,7 @@ class MainState extends State<MainPage>{
                                   child: IconButton(
                                     icon: Image.asset("images/fast_food.png"),
                                     onPressed: (){
-                                  
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchPage("category", "Fast Food")));
                                     },
                                   ),
                                 ),

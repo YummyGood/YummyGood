@@ -3,6 +3,9 @@ import 'package:yummygood/displays/itempage.dart';
 import 'package:yummygood/displays/viewcart.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:sqflite/sqflite.dart';
+import 'mainpage.dart';
+import 'categories.dart';
+import 'person.dart';
 
 class MenuPage extends StatefulWidget{
   MenuPage(this.restaurantId);
@@ -42,10 +45,9 @@ class MenuState extends State<MenuPage>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(icon:const Icon(Icons.home), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.search), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.food_bank), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.person), onPressed: (){},),
+            IconButton(icon:const Icon(Icons.home), onPressed: (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage()), (route) => false);},),
+            IconButton(icon:const Icon(Icons.search), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));},),
+            IconButton(icon:const Icon(Icons.person), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PersonPage()));},),
           ],
         )
       ),
@@ -165,8 +167,9 @@ class MenuItem extends StatelessWidget{
               Row(
                 children: <Widget>[
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(menuItem["name"].toString(), style:const TextStyle(fontSize:15)),
+                      Align(child: Text(menuItem["name"].toString(), style:const TextStyle(fontSize:15))),
                       Text("\$${menuItem["price"].toString()}"),
                       Text(menuItem["description"].toString())
                     ],

@@ -3,6 +3,9 @@ import 'package:yummygood/db/dbservice.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:yummygood/displays/menupage.dart';
 import 'dart:developer' as developer;
+import 'mainpage.dart';
+import 'categories.dart';
+import 'person.dart';
 
 class SearchPage extends StatefulWidget{
   String searchType;
@@ -27,7 +30,7 @@ class SearchState extends State<SearchPage>{
       final data = await db.rawQuery("SELECT * FROM Restaurant WHERE category = '${widget.query}'");
       return data;
     }else{
-      final data = await db.rawQuery("SELECT * FROM Restaurant WHERE name LIKE '%${widget.query}%'");
+      final data = await db.rawQuery("SELECT * FROM Restaurant WHERE name LIKE '%${widget.query}%' UNION SELECT * FROM Restaurant WHERE category = '${widget.query}'");
       return data;
     }
 
@@ -47,10 +50,9 @@ class SearchState extends State<SearchPage>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(icon:const Icon(Icons.home), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.search), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.food_bank), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.person), onPressed: (){},),
+            IconButton(icon:const Icon(Icons.home), onPressed: (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage()), (route) => false);},),
+            IconButton(icon:const Icon(Icons.search), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));},),
+            IconButton(icon:const Icon(Icons.person), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PersonPage()));},),
           ],
         )
       ),

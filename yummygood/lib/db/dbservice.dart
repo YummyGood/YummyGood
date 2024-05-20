@@ -13,11 +13,11 @@ class DatabaseService {
   Future<Database> getDatabase() async{
     if (db != null) return db!;
     print("Initializing database");
-    db = await initDatabase();
+    db = await _initDatabase();
     return db!;
   }
 
-  Future<Database> initDatabase() async {
+  Future<Database> _initDatabase() async {
     WidgetsFlutterBinding.ensureInitialized();
     final path = join(await getDatabasesPath(), 'yummygood.db');
     
@@ -51,8 +51,27 @@ class DatabaseService {
     await _db.execute("INSERT INTO MenuItem VALUES(1, '6 Wicked Wings', 'Crispy and Spicy hot golden wings', 9.95, 1, 'https://images.ctfassets.net/crbk84xktnsl/6q2ND6Od6QOZ60AsBvsbur/cb1730822c89ec606dace7fab833f55d/Wicked_Wings_6.png')");
     await _db.execute("INSERT INTO MenuItem VALUES(2, 'Zinger Burger', 'Spicy crispy chicken burger', 7.45, 1, 'https://images.ctfassets.net/crbk84xktnsl/4zgRg2g2ZRBey10D3qfjyZ/e9f079f486f401b884ad570be0a48af8/Zinger_Burger.png')");
     await _db.execute("INSERT INTO MenuItem VALUES(3, '3 Original Tenders', 'Hot and crispy boneless chicken', 4.45, 1, 'https://images.ctfassets.net/crbk84xktnsl/1WeLwRKc8mzxhGmwHq3fb3/97529f19d514bf1a21f4e8169f4dc0ee/Original_Tender_3.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(4, 'BBQ Slider', 'Small BBQ Wrap', 3.95, 1, 'https://images.ctfassets.net/crbk84xktnsl/Is7MubLkZ6t4DAdqw06X7/cfeac30190ebbfda074701941f6e0b72/Slider_BBQ.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(5, 'Popcorn Chicken GoBucket', 'Popcorn Chicken and Chips', 2.50, 1, 'https://images.ctfassets.net/crbk84xktnsl/xiZX7QpmtcZ3E6Ut3OYNy/8cd5bf414effa5fae1c82c60a146d3d5/Go_Bucket_Popcorn_Chicken.png')");
 
     developer.log("Inserted menu items for KFC");
+
+    await _db.execute("INSERT INTO MenuItem VALUES(6, 'Cheeseburger', 'Soft bun and 10:1 patty with cheese', 3.50, 2, 'https://www.mcdonalds.com.sg/sites/default/files/2023-02/1200x1200_MOP_BBPilot_Cheeseburger_1.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(7, 'Big Mac', '2 Beef Patties', 7.90, 2, 'https://mcdonalds.com.au/sites/mcdonalds.com.au/files/YMAL_Grand-Big-Mac-20240201.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(8, 'Quarter Pounder', '4:1 patty with cheese', 8.00, 2, 'https://mcdonalds.com.au/sites/mcdonalds.com.au/files/YMAL_BURGER_QuarterPounder-Double_0.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(9, '10 Chicken McNuggets', 'Deep fried boneless chicken', 9.75, 2, 'https://images.ctfassets.net/crbk84xktnsl/1Yzg0jx3Kf0QuvwmfPtsM8/f941c89b98b84375c2cd956d611af0f8/Nuggets_10.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(10, 'Chicken Snack Wrap', 'Small Chicken Wrap', 3.50, 2, 'https://mcdonalds.com.au/sites/mcdonalds.com.au/files/MCD8195-HM-VisID-Refresh-DiscoverHM-thumbs-Wholemeal-Chicken-Snackwrap.png')");
+
+    developer.log("Inserted menu items for McDonalds");
+
+    await _db.execute("INSERT INTO MenuItem VALUES(11, 'Beef Kebab', 'Kebab with doner meat', 14.00, 3, 'https://belchicken.com/wp-content/uploads/2022/01/doner-kebab.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(12, 'Beef Snack Pack', 'Beef and chips with sauce', 17.00, 3, 'https://leongatha.mightykebab.com/wp-content/uploads/2021/06/HSP-BoxLRG.png')");
+    await _db.execute("INSERT INTO MenuItem VALUES(13, 'Sucuk Pied', '4:1 patty with cheese', 19.10, 3, 'https://49pide.com/wp-content/uploads/2023/12/sucuklu-kasarli-450x400.png')");
+    
+    developer.log("Inserted menu items for Kebab King");
+
+
+
 
   }
 

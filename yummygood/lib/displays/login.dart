@@ -96,7 +96,7 @@ class LoginState extends State<LoginPage>{
                 Align(alignment: Alignment.centerLeft, child: Text("Password:")),
               ],
             ),
-            SizedBox(width:350,child:TextField(controller: passwordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your password"))),
+            SizedBox(width:350,child:TextField(controller: passwordController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your password"), obscureText: true, enableSuggestions: false,autocorrect: true,)),
             const SizedBox(height:10),
 
             SizedBox(

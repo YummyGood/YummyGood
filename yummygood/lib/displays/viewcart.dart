@@ -1,10 +1,11 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:yummygood/db/userservice.dart';
 import 'package:sqflite/sqflite.dart';
 import 'dart:developer' as developer;
+import 'mainpage.dart';
+import 'categories.dart';
+import 'person.dart';
 
 class ViewCartPage extends StatefulWidget{
   String restaurantId;
@@ -48,10 +49,9 @@ class ViewCartState extends State<ViewCartPage>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(icon:const Icon(Icons.home), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.search), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.food_bank), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.person), onPressed: (){},),
+            IconButton(icon:const Icon(Icons.home), onPressed: (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage()), (route) => false);},),
+            IconButton(icon:const Icon(Icons.search), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));},),
+            IconButton(icon:const Icon(Icons.person), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PersonPage()));},),
           ],
         )
       ),
@@ -67,14 +67,14 @@ class ViewCartState extends State<ViewCartPage>{
               double totalCost = 0;
 
               for (dynamic item in items){
-                cartItemsList.add(CartItem([item["item_info"]["name"].toString(), item["item_info"]["price"].toString(), item["cart_info"]["quantity"].toString(), item["item_info"]["picture_url"]]));
+                cartItemsList.add(CartItem([item["item_info"]["name"].toString(), item["item_info"]["price"].toString(), item["cart_info"]["quantity"].toString(), item["item_info"]["picture_url"], item["item_info"]["item_id"].toString(), widget.restaurantId]));
                 double price = item["item_info"]["price"] as double;
                 int quantity = item["cart_info"]["quantity"] as int;
 
                 totalCost = totalCost + price * quantity;
               }
               
-              cartItemsList.add(Align(alignment:Alignment.center, child: Text("Total Cost: \$${totalCost}",style: const TextStyle(fontSize:25))));
+              cartItemsList.add(Align(alignment:Alignment.center, child: Text("Total Cost: \$${totalCost.toStringAsFixed(2)}",style: const TextStyle(fontSize:25))));
 
               return Center(
                 child: Column(
@@ -91,6 +91,8 @@ class ViewCartState extends State<ViewCartPage>{
                   ]
                 )
               );
+            }else{
+              return const Center(child: Text("Your cart is empty"));
             }
           }
           return const Center(child: CircularProgressIndicator());
@@ -126,6 +128,18 @@ class CartItem extends StatelessWidget{
                     ],
                   ),
                   const Spacer(),
+                  IconButton(icon:Icon(Icons.delete), onPressed: () async{
+                    final quantity = int.parse(cartItem[2]);
+                    DatabaseService dbService = DatabaseService();
+                    Database db = await dbService.getDatabase();
+                    if (quantity == 1){
+                      await db.execute("DELETE FROM CartItem WHERE item_id = ${cartItem[4]}");
+                    }else{
+                      await db.execute("UPDATE CartItem SET quantity = ${quantity - 1} WHERE item_id = ${cartItem[4]}");
+                    }
+                    Navigator.of(context).pop();
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => ViewCartPage(cartItem[5])));
+                  }),
                   Container(
                     decoration:BoxDecoration(
                       color:Colors.white,
@@ -136,7 +150,7 @@ class CartItem extends StatelessWidget{
                       height:100, 
                       child: Image.network(cartItem[3].toString(), 
                         fit:BoxFit.cover
-                      )),
+                  )),
                 ],
               ),
               const SizedBox(height:10),

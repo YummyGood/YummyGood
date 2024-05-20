@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:yummygood/db/userservice.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:yummygood/displays/mainpage.dart';
 import 'dart:developer' as developer;
+import 'categories.dart';
+import 'person.dart';
 
 class ItemPage extends StatefulWidget{
   
@@ -37,10 +40,9 @@ class ItemState extends State<ItemPage>{
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            IconButton(icon:const Icon(Icons.home), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.search), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.food_bank), onPressed: (){},),
-            IconButton(icon:const Icon(Icons.person), onPressed: (){},),
+            IconButton(icon:const Icon(Icons.home), onPressed: (){Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MainPage()), (route) => false);},),
+            IconButton(icon:const Icon(Icons.search), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => CategoriesPage()));},),
+            IconButton(icon:const Icon(Icons.person), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => PersonPage()));},),
           ],
         )
       ),
