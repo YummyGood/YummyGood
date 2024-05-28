@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'package:random_string_generator/random_string_generator.dart';
 
+List<String> paymentMethods = ["VISA", "Mastercard", "Paypal", "Stripe"];
 
 class SignUpPage extends StatefulWidget{
   const SignUpPage({super.key});
@@ -21,11 +22,13 @@ class SignUpState extends State<SignUpPage>{
   final lastNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final deliveryAddressController = TextEditingController();
+  final restIdController = TextEditingController();
 
   String errorMessage = "";
   Color errorColor = Colors.red;
-
   final databaseService = DatabaseService();
+
+  String dropVal = paymentMethods.first;
 
   void createUser() async{
     final db = await databaseService.getDatabase();
@@ -33,6 +36,12 @@ class SignUpState extends State<SignUpPage>{
     
     // check fields
     if (emailController.text.isEmpty || passwordController.text.isEmpty || confirmPasswordController.text.isEmpty || firstNameController.text.isEmpty || lastNameController.text.isEmpty || phoneNumberController.text.isEmpty || deliveryAddressController.text.isEmpty){
+      
+      String restId = "";
+      if (restIdController.text.isEmpty){
+        restId = restIdController.text;
+      }
+
       errorMessage = "Please ensure all fields are completed!";
       errorColor = Colors.red;
       setState((){});
@@ -60,7 +69,7 @@ class SignUpState extends State<SignUpPage>{
     String salt = gen.generate();
     String passwordHash = md5.convert(utf8.encode("$salt${passwordController.text}")).toString();
     
-    await db.execute("INSERT INTO Users VALUES('${emailController.text}','${firstNameController.text}','${lastNameController.text}','${phoneNumberController.text}','${deliveryAddressController.text}','$passwordHash','$salt')");
+    await db.execute("INSERT INTO Users VALUES('${emailController.text}','${firstNameController.text}','${lastNameController.text}','${phoneNumberController.text}','${deliveryAddressController.text}','$passwordHash','$salt', '${restIdController.text}')");
     showDialog(context: context, builder: (context) => AlertDialog(
       title: const Text("Success"),
       content: const Text("User successfully created!"),
@@ -164,18 +173,26 @@ class SignUpState extends State<SignUpPage>{
               SizedBox(width:350,child:TextField(controller: deliveryAddressController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Enter your address"), maxLines: 2)),
               const SizedBox(height:15),
 
-              // Payment method button
-              TextButton(
-                onPressed: (){
-                  
+              DropdownMenu<String>(
+                initialSelection: paymentMethods.first,
+                onSelected: (String? value){
+                  setState((){
+                    dropVal = value!;
+                  });
                 },
-                style: TextButton.styleFrom(
-                  backgroundColor: const Color(0xFFEBA174),
-                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-                  splashFactory: NoSplash.splashFactory,
+                dropdownMenuEntries: paymentMethods.map<DropdownMenuEntry<String>>((String value) {
+                  return DropdownMenuEntry<String>(value: value, label: value);
+                }).toList(),
+                inputDecorationTheme: const InputDecorationTheme(
+                  filled: true,
+                  fillColor: Color(0xFFEBA174),
                 ),
-                child:const Text("Add Payment Method", style:TextStyle(color:Colors.black))),
+              ),
+              const SizedBox(height:15),
 
+              SizedBox(width:200,child:TextField(controller: restIdController, decoration:const InputDecoration(filled:true, fillColor: Color(0xFFEBA174), border:InputBorder.none, hintText:"Restaurant ID"))),
+              const SizedBox(height:15),
+              
               // Sign up button
               SizedBox(
                 width:160,

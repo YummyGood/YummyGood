@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:yummygood/db/userservice.dart';
 import 'package:yummygood/displays/itempage.dart';
 import 'package:yummygood/displays/viewcart.dart';
 import 'package:yummygood/db/dbservice.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:yummygood/displays/vieworders.dart';
 import 'mainpage.dart';
 import 'categories.dart';
 import 'person.dart';
@@ -19,8 +21,12 @@ class MenuPage extends StatefulWidget{
 class MenuState extends State<MenuPage>{
 
   List<Widget> menuItemsList = [];
+  bool isEnabled = false;
 
   Future<dynamic> getMenuItems() async{
+    UserService userService = UserService();
+    isEnabled = userService.getUser()!.restId == widget.restaurantId;
+
     DatabaseService dbService = DatabaseService();
     Database db = await dbService.getDatabase();
 
@@ -31,6 +37,7 @@ class MenuState extends State<MenuPage>{
     Map<dynamic, dynamic> menuData = {restaurantData:data2};
     return menuData;
   }
+
 
   @override
   Widget build(BuildContext context){
@@ -76,6 +83,17 @@ class MenuState extends State<MenuPage>{
                   shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
                   splashFactory: NoSplash.splashFactory,
                 )));
+                
+              menuItemsList.add(TextButton(onPressed: isEnabled ? (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => OrdersPage(restaurantInfo["restaurant_id"].toString())));
+              } : null,
+                child: Text("Orders", style:TextStyle(color:Colors.black)), 
+                style:TextButton.styleFrom(
+                  backgroundColor: isEnabled ? const Color(0xFFFF4500) : Colors.grey,
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  splashFactory: NoSplash.splashFactory,
+                )));
+
 
               return Center(
                 child:Column(
@@ -96,7 +114,7 @@ class MenuState extends State<MenuPage>{
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text("${restaurantInfo["name"]} Menu", style:const TextStyle(fontSize: 20)),
-                            IconButton(icon: Icon(Icons.edit), onPressed:(){Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(restaurantInfo)));}),
+                            IconButton(icon: Icon(Icons.edit), onPressed:isEnabled ? (){Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(restaurantInfo)));} : null),
                           ],
                         ),
                         Row(

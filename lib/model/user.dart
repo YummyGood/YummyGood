@@ -4,6 +4,7 @@ class User{
   String lastName;
   String phone;
   String address;
+  String restId;
 
-  User(this.email, this.firstName, this.lastName, this.phone, this.address);
+  User(this.email, this.firstName, this.lastName, this.phone, this.address, this.restId);
 }

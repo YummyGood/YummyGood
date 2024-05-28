@@ -24,13 +24,13 @@ class DatabaseService {
 
     return await openDatabase(path, 
       onCreate: _onCreate,
-      version:1
+      version:2
     );
 
   }
 
   void _onCreate(Database _db, int version) async{
-    await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT)');
+    await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT, restId TEXT)');
     developer.log("Created Users Table");
 
     await _db.execute('CREATE TABLE Restaurant(restaurant_id NUMBER PRIMARY KEY, name TEXT, category TEXT, delivery_fee REAL, delivery_time TEXT, picture_url TEXT)');
@@ -41,6 +41,12 @@ class DatabaseService {
 
     await _db.execute('CREATE TABLE CartItem(item_id NUMBER PRIMARY KEY, restaurant_id TEXT, email TEXT, quantity NUMBER)');
     developer.log("Created Cart Table");
+
+    await _db.execute('CREATE TABLE Orders(order_id NUMBER PRIMARY KEY, restaurant_id TEXT, email TEXT, time TEXT)');
+    developer.log("Created Orders Table");
+
+    await _db.execute('CREATE TABLE OrderItem(order_id NUMBER, item_id NUMBER, quantity NUMBER)');
+    developer.log("Created Order Items Table");
 
     await _db.execute("INSERT INTO Restaurant VALUES(1, 'KFC', 'Fast Food' ,8.95, '20-30 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/8fe82646a8a3f13b36e996a83752c618/719c6bd2757b08684c0faae44d43159d.jpeg')");
     await _db.execute("INSERT INTO Restaurant VALUES(2, 'McDonalds', 'Fast Food', 4.99, '10-15 minutes', 'https://tb-static.uber.com/prod/image-proc/processed_images/ceba3c72257138fe56e868d7edf86fc9/c9252e6c6cd289c588c3381bc77b1dfc.jpeg')");
@@ -66,11 +72,8 @@ class DatabaseService {
 
     await _db.execute("INSERT INTO MenuItem VALUES(11, 'Beef Kebab', 'Kebab with doner meat', 14.00, 3, 'https://belchicken.com/wp-content/uploads/2022/01/doner-kebab.png')");
     await _db.execute("INSERT INTO MenuItem VALUES(12, 'Beef Snack Pack', 'Beef and chips with sauce', 17.00, 3, 'https://leongatha.mightykebab.com/wp-content/uploads/2021/06/HSP-BoxLRG.png')");
-    await _db.execute("INSERT INTO MenuItem VALUES(13, 'Sucuk Pied', '4:1 patty with cheese', 19.10, 3, 'https://49pide.com/wp-content/uploads/2023/12/sucuklu-kasarli-450x400.png')");
     
     developer.log("Inserted menu items for Kebab King");
-
-
 
 
   }

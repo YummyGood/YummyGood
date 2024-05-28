@@ -101,6 +101,7 @@ class ItemState extends State<ItemPage>{
                                 final quantity = existingData[0]["quantity"] as int;
                                 db.execute("UPDATE CartItem SET quantity = ${quantity + 1} WHERE email = '${userService.getUser()!.email}' AND item_id = ${widget.itemId}");
                               }
+
                               showDialog(context: context, builder: (context) => AlertDialog(
                                 title: const Text("Success"),
                                 content: const Text("Item successfully added to cart!"),

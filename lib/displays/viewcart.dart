@@ -62,7 +62,6 @@ class ViewCartState extends State<ViewCartPage>{
               cartItemsList.clear();
               cartItemsList.add(Align(alignment:Alignment.center, child: Text("${snapshot.data.keys.toList()[0].toString()} Cart",style: const TextStyle(fontSize:25))));
 
-              
               final items = snapshot.data.values.toList()[0];
               double totalCost = 0;
 
@@ -75,6 +74,40 @@ class ViewCartState extends State<ViewCartPage>{
               }
               
               cartItemsList.add(Align(alignment:Alignment.center, child: Text("Total Cost: \$${totalCost.toStringAsFixed(2)}",style: const TextStyle(fontSize:25))));
+              cartItemsList.add(Align(alignment:Alignment.center, child: TextButton(child: const Text("Order"), onPressed: () async{
+                Database db = await DatabaseService().getDatabase();
+                final lastOrder = await db.rawQuery("SELECT * FROM Orders ORDER BY order_id");
+                int orderId = 0;
+                if (lastOrder.isNotEmpty){
+                  orderId = int.parse(lastOrder[lastOrder.length - 1]["order_id"].toString()) + 1;
+                }
+
+                await db.execute("INSERT INTO Orders VALUES($orderId, '${widget.restaurantId}', '${items[0]["cart_info"]["email"]}', '${DateTime.now().toString()}')");
+                
+                for (dynamic item in items){
+                  await db.execute("INSERT INTO OrderItem VALUES($orderId, ${item["item_info"]["item_id"].toString()}, ${item["cart_info"]["quantity"].toString()})");
+                }
+
+                await db.execute("DELETE FROM CartItem WHERE restaurant_id = ${widget.restaurantId} AND email = '${UserService().getUser()!.email}'");
+
+                showDialog(context: context, builder: (context) => AlertDialog(
+                  title: const Text("Success"),
+                  content: const Text("Order placed!"),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: (){Navigator.of(context).pop();Navigator.of(context).pop();},
+                      child: const Text("OK")
+                    )
+                  ]
+                ));
+
+
+                }, 
+                style: TextButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF4500),
+                  foregroundColor: Colors.black,
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+                  splashFactory: NoSplash.splashFactory,))));
 
               return Center(
                 child: Column(
@@ -121,6 +154,7 @@ class CartItem extends StatelessWidget{
               Row(
                 children: <Widget>[
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(cartItem[0].toString(), style:const TextStyle(fontSize:15)),
                       Text("\$${cartItem[1].toString()}"),
