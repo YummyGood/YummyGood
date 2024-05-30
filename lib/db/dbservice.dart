@@ -30,13 +30,13 @@ class DatabaseService {
   }
 
   void _onCreate(Database _db, int version) async{
-    await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT, restId TEXT)');
+    await _db.execute('CREATE TABLE Users(email TEXT PRIMARY KEY, first_name TEXT, last_name TEXT, phone TEXT, address TEXT, hash TEXT, salt TEXT, restId TEXT, subscription NUMBER DEFAULT 0)');
     developer.log("Created Users Table");
 
     await _db.execute('CREATE TABLE Restaurant(restaurant_id NUMBER PRIMARY KEY, name TEXT, category TEXT, delivery_fee REAL, delivery_time TEXT, picture_url TEXT)');
     developer.log("Created Restaurant Table");
 
-    await _db.execute('CREATE TABLE MenuItem(item_id NUMBER PRIMARY KEY, name TEXT, description TEXT, price REAL, restaurant_id NUMBER, picture_url TEXT)');
+    await _db.execute('CREATE TABLE MenuItem(item_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, price REAL, restaurant_id NUMBER, picture_url TEXT)');
     developer.log("Created Menu Item Table");
 
     await _db.execute('CREATE TABLE CartItem(item_id NUMBER PRIMARY KEY, restaurant_id TEXT, email TEXT, quantity NUMBER)');

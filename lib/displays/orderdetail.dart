@@ -88,7 +88,7 @@ class OrderItem extends StatelessWidget{
   dynamic orderItem;
   OrderItem(this.orderItem);
 
-  @override 
+  @override
   Widget build(BuildContext context){
     return Column(
       children: [
@@ -114,11 +114,11 @@ class OrderItem extends StatelessWidget{
                     decoration:BoxDecoration(
                       color:Colors.white,
                       border: Border.all(
-                        color: Colors.black, 
-                        width:1)), 
-                      width:100, 
-                      height:100, 
-                      child: Image.network(orderItem.values.toList()[0]["picture_url"].toString(), 
+                        color: Colors.black,
+                        width:1)),
+                      width:100,
+                      height:100,
+                      child: Image.network(orderItem.values.toList()[0]["picture_url"].toString(),
                         fit:BoxFit.cover
                   )),
                 ],

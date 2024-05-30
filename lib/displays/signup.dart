@@ -69,7 +69,7 @@ class SignUpState extends State<SignUpPage>{
     String salt = gen.generate();
     String passwordHash = md5.convert(utf8.encode("$salt${passwordController.text}")).toString();
     
-    await db.execute("INSERT INTO Users VALUES('${emailController.text}','${firstNameController.text}','${lastNameController.text}','${phoneNumberController.text}','${deliveryAddressController.text}','$passwordHash','$salt', '${restIdController.text}')");
+    await db.execute("INSERT INTO Users VALUES('${emailController.text}','${firstNameController.text}','${lastNameController.text}','${phoneNumberController.text}','${deliveryAddressController.text}','$passwordHash','$salt', '${restIdController.text}', 0)");
     showDialog(context: context, builder: (context) => AlertDialog(
       title: const Text("Success"),
       content: const Text("User successfully created!"),
